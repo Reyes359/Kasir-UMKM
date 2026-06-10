@@ -8,7 +8,7 @@ class TransactionController extends Controller
 {
     public function details(Transaction $transaction)
     {
-        $transaction->load(['customer', 'items.product']);
+        $transaction->loadMissing(['customer', 'items.product']);
 
         return view('transactions.detail', compact('transaction'));
     }
