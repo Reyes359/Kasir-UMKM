@@ -28,6 +28,21 @@ class AuthRedirectTest extends TestCase
         $this->followRedirects($response)->assertSee('KASIR UMKM');
     }
 
+    public function test_invalid_login_shows_error_message_with_tailwind_markup(): void
+    {
+        $response = $this->from('/login')->post('/login', [
+            'email' => 'wrong@example.com',
+            'password' => 'wrongpassword',
+        ]);
+
+        $response->assertRedirect('/login');
+        $response->assertSessionHasErrors(['email' => 'Email atau password salah.']);
+
+        $this->followRedirects($response)
+            ->assertSee('Email atau password salah.')
+            ->assertSeeHtml('class="mt-2 text-xs text-red-500 block"');
+    }
+
     public function test_root_route_redirects_guest_to_login_and_authenticated_user_to_dashboard(): void
     {
         $guestResponse = $this->get('/');

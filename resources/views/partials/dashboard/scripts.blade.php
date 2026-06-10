@@ -413,8 +413,17 @@
             document.getElementById('sidebar').classList.remove('open');
             updateClock();
         }
-        document.getElementById('sidebarNav').addEventListener('click',(e)=>{const btn=e.target.closest('button[data-page]');if(btn)navigateTo(btn.dataset.page);});
-        document.getElementById('menuToggle').addEventListener('click',()=>document.getElementById('sidebar').classList.toggle('open'));
+        const sidebarNav = document.getElementById('sidebarNav');
+        const sidebarToggle = document.getElementById('menuToggle') || document.getElementById('sidebarToggle');
+        const sidebar = document.getElementById('sidebar');
+
+        if (sidebarNav) {
+            sidebarNav.addEventListener('click',(e)=>{const btn=e.target.closest('button[data-page]');if(btn)navigateTo(btn.dataset.page);});
+        }
+
+        if (sidebarToggle && sidebar) {
+            sidebarToggle.addEventListener('click',()=>sidebar.classList.toggle('open'));
+        }
 
         window._addCategory = function(){
             showModal('Tambah Kategori',`<form novalidate><div class="mb-3"><label class="block text-sm font-semibold text-slate-700 mb-1">Nama Kategori</label><input type="text" name="name" placeholder="Contoh: Makanan Pokok"><div class="field-error mt-1 text-sm text-red-500"></div></div><div class="mb-4"><label class="block text-sm font-semibold text-slate-700 mb-1">Deskripsi</label><textarea name="desc" rows="2"></textarea><div class="field-error mt-1 text-sm text-red-500"></div></div><div class="flex gap-3"><button type="submit" class="btn btn-primary flex-1 justify-center">Simpan</button><button type="button" class="btn btn-outline flex-1 justify-center" onclick="this.closest('.modal-overlay').remove()">Batal</button></div></form>`,(data,close,form)=>{const errors=validateCategoryForm(data);if(Object.keys(errors).length){renderFormErrors(form,errors);return;}store.categories.push({id:store.nextCategoryId++,name:data.name.trim(),desc:String(data.desc||data.description||'').trim(),productCount:0});updateCategoryCounts();toast('✅ Kategori berhasil ditambahkan!','success');close();navigateTo('categories');});

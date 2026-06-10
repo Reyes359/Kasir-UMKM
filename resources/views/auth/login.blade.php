@@ -66,17 +66,35 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('login') }}" class="mt-6 space-y-4">
+                    <form method="POST" action="{{ route('login') }}" class="mt-6 space-y-4" novalidate>
                         @csrf
                         <div>
                             <label for="email" class="mb-2 block text-sm font-semibold text-slate-700">Email</label>
-                            <input type="email" id="email" name="email" value="{{ old('email') }}" required
-                                class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-brand-500 focus:bg-white focus:ring-4 focus:ring-brand-100">
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                value="{{ old('email') }}"
+                                required
+                                class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-brand-500 focus:bg-white focus:ring-4 focus:ring-brand-100 @error('email') border-red-500 bg-red-50 @enderror"
+                            >
+                            @error('email')
+                                <span class="mt-2 text-xs text-red-500 block">{{ $message }}</span>
+                            @enderror
                         </div>
+
                         <div>
                             <label for="password" class="mb-2 block text-sm font-semibold text-slate-700">Password</label>
-                            <input type="password" id="password" name="password" required
-                                class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-brand-500 focus:bg-white focus:ring-4 focus:ring-brand-100">
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                required
+                                class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-brand-500 focus:bg-white focus:ring-4 focus:ring-brand-100 @error('password') border-red-500 bg-red-50 @enderror"
+                            >
+                            @error('password')
+                                <span class="mt-2 text-xs text-red-500 block">{{ $message }}</span>
+                            @enderror
                         </div>
                         <button type="submit"
                             class="flex w-full items-center justify-center rounded-2xl bg-brand-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-600/20 transition hover:bg-brand-700">
